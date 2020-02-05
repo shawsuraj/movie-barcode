@@ -1,15 +1,19 @@
 #!/usr/bin/python3
+#
+#v002
+#
+#shawsuraj
 
 import argparse
 import os
 import cv2 as cv
-import numpy as np
 import time
+from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description = 'Video Clip to barcode form...')
 parser.add_argument('file', metavar = 'abc.mp4', help = "Location of the video file")
 parser.add_argument('-s', '--save', action="store_true", help = "Save all the frames of a video")
-# parser.add_argument('-v', '--verbose', action="store_true", help = "Width of each frame")
+parser.add_argument('-v', '--verbose', action="store_true", help = "Show progress")
 
 args = parser.parse_args()
 
@@ -33,22 +37,30 @@ def baseSetup(vid) :
                 j = (i/10) + 1
                 dir = dir[0:-int(j)] + str(i)
 
-def framecap(vid, dir, save_frame = False) :
+def framecap(vid, dir) :
     vidCap = cv.VideoCapture(vid)
     success,image = vidCap.read()
-    count = 0
+    count = 0            #Initialise frame count
     success = True
-    # length = int(vidCap.get(cv.CAP_PROP_FRAME_COUNT))
-    while True :          #All frames
-    # for i in range(5000):   #Limited frames
-        if save_frame :
+    len = int(vidCap.get(cv.CAP_PROP_FRAME_COUNT))
+    if args.verbose :
+        pbar = tqdm(total=len, desc = "Processing", unit = "frames")
+    for count in range(len) :                #All frames
+    # while success :
+    # for i in range(5000):     #Limited frames
+        if args.save :
+            # print(count)
             cv.imwrite(os.path.join(dir, "frame%d.jpg" % count), image)     # save frame as JPEG filee
-            count += 1
         resize(image, dir)
         success,image = vidCap.read()
+        count += 1
+        if 'pbar' in locals():
+            pbar.update(1)
+    if 'pbar' in locals():
+        pbar.close()
 
 def resize(image, dir):
-    width = 1 #Each frame's width
+    width = 1               #Each frame's width
     height = image.shape[0] # keep original height
     dim = (width, height)
     resized = cv.resize(image, dim, interpolation = cv.INTER_AREA)
@@ -71,7 +83,7 @@ if __name__ == "__main__" :
         vid = args.file
         dir = baseSetup(vid) + '/'
         # print(dir)
-        framecap(vid, dir, args.save)
+        framecap(vid, dir)
 
         print("All the files are saved in >> " + dir)
 
