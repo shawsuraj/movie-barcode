@@ -1,5 +1,7 @@
 Convert any video clip into bar form or save all its frames.
 
+[![Build Status](https://travis-ci.com/shawsuraj/movie-barcode.svg?branch=master)](https://travis-ci.com/shawsuraj/movie-barcode)
+
 ### Update v003
 * Barcode mode change to optional(-b).
 * Module check script added.
