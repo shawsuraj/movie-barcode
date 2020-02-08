@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 #
 #@shawsuraj
-#
-#v003
 
 import sys
 try:
