@@ -45,10 +45,10 @@ def framecap(vid, dir) :
         if args.save :
             cv.imwrite(os.path.join(dir, "frame%d.jpg" % count), image)     # save frame as JPEG filee
         if args.bar :
-            if count < (len - 1) :
-                bar = concat(bar ,resize(image, dir))
-            elif count == 0 :
+            if count == 0 :
                 bar = resize(image, dir)
+            elif count < (len - 1) :
+                bar = concat(bar ,resize(image, dir))
             else :
                 bar = concat(bar ,resize(image, dir))
                 cv.imwrite("%sbar.jpg" % dir, bar)
