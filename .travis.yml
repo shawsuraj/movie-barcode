@@ -1,12 +1,24 @@
 language: python
+
+os:
+  - windows
+  - linux
+  - osx
+
 python:
   - "3.4"
   - "3.5"
   - "3.6"
   - "3.7"
-# command to install dependencies
+  - "3.8"
+
 install:
+  # Install Python 3
+  - if [[ "`uname`" == "Darwin" ]]; then travis_retry brew install python3; fi
+
+  # command to install dependencies
   - pip3 install -r requirements.txt
+
 # command to run tests
 script:
   - python3 mvbar.py -bsv test.mp4
