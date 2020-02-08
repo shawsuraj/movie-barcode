@@ -3,6 +3,7 @@ import os
 import cv2 as cv
 import time
 from tqdm import tqdm
+# import pafy
 
 parser = argparse.ArgumentParser(description = 'Video Clip to barcode form...')
 parser.add_argument('file', metavar = 'abc.mp4', help = "Location of the video file")
@@ -13,7 +14,6 @@ parser.add_argument('-v', '--verbose', action="store_true", help = "Show progres
 args = parser.parse_args()
 
 def baseSetup(vid) :
-
     dir = os.path.basename(vid)     #Setting up folder
     dir = os.path.splitext(dir)[0]
     if not os.path.exists(dir) :
@@ -45,7 +45,13 @@ def framecap(vid, dir) :
         if args.save :
             cv.imwrite(os.path.join(dir, "frame%d.jpg" % count), image)     # save frame as JPEG filee
         if args.bar :
-            resize(image, dir)
+            if count < (len - 1) :
+                bar = concat(bar ,resize(image, dir))
+            elif count == 0 :
+                bar = resize(image, dir)
+            else :
+                bar = concat(bar ,resize(image, dir))
+                cv.imwrite("%sbar.jpg" % dir, bar)
         success,image = vidCap.read()
         count += 1
         if 'pbar' in locals():      # Progress bar update
@@ -58,16 +64,11 @@ def resize(image, dir):
     height = image.shape[0] # keep original height
     dim = (width, height)
     resized = cv.resize(image, dim, interpolation = cv.INTER_AREA)
-    if not os.path.isfile("%sbar.jpg" % dir) :
-        cv.imwrite("%sbar.jpg" % dir, resized)
-    else :
-        return (resized, dir)
+    return resized
 
-def concat(resized, dir):
-    bar = cv.imread("%sbar.jpg" % dir)
-    im_h = cv.hconcat([bar, resized])
-    os.remove("%sbar.jpg" % dir)
-    cv.imwrite("%sbar.jpg" % dir, im_h)
+def concat(bar, resized):
+    new_bar = cv.hconcat([bar, resized])
+    return new_bar
 
 def endmessage(dir) :
     print("[*] All the files are saved in >> " + dir)
