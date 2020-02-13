@@ -1,18 +1,32 @@
-import subprocess
 import sys
 
-def module_exists(module_name):
+from Defs.installer import pip
+
+def module_check(module_name):
     try:
         __import__(module_name)
+        return True
     except ImportError:
         return False
-    else:
-        return True
 
 def check() :
-    modules = ['argparse','cv2','tqdm']
-    not_installed = []
-    for module in modules :
-        if not module_exists(module) :
-            not_installed.append(module)
-    print("[*] Install %s module(s)" % not_installed[1:-1])
+    global reqs
+    reqs = {}
+    req_f = open("requirements.txt")
+    req = req_f.readline()[:-1]
+    while req :
+        if req == "opencv-python" :
+            reqs["cv2"] = module_check("cv2")
+        else :
+            reqs[req] = module_check(req)
+        req = req_f.readline()[:-1]
+    # for req in reqs :
+    #     module[req] = module_check[req]
+    #
+    # for req, installed in reqs.items() :
+    #     installed = module_check(req)
+
+def install() :
+    for req, installed in reqs.items() :
+        if not installed :
+            pip(req)

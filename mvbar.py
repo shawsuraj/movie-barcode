@@ -3,12 +3,16 @@
 #@shawsuraj
 
 import sys
-try:
-    from Defs.main import *
-except ImportError:
-    from Defs.checks import *
+
+try :
+    from Defs.main import start
+
+except ImportError :
+    from Defs.checks import check, install
     check()
-    sys.exit()
+    install()
+
+    from Defs.main import start
 
 if __name__ == "__main__" :
     try :

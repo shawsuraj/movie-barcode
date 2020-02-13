@@ -1,15 +1,26 @@
+#!/usr/bin/python3
 import argparse
 import os
 import cv2 as cv
 import time
-from tqdm import tqdm
 # import pafy
 
+from tqdm import tqdm
+
+
 parser = argparse.ArgumentParser(description = 'Video Clip to barcode form...')
-parser.add_argument('file', metavar = 'abc.mp4', help = "Location of the video file")
-parser.add_argument('-b', '--bar', action="store_true", help="Create barcode of the video")
-parser.add_argument('-s', '--save', action="store_true", help = "Save all the frames of a video")
-parser.add_argument('-v', '--verbose', action="store_true", help = "Show progress")
+parser.add_argument('file',
+                    metavar = 'abc.mp4',
+                    help = "Location of the video file")
+parser.add_argument('-b', '--bar',
+                    action="store_true",
+                    help="Create barcode of the video")
+parser.add_argument('-s', '--save',
+                    action="store_true",
+                    help = "Save all the frames of a video")
+parser.add_argument('-v', '--verbose',
+                    action="store_true",
+                    help = "Show progress")
 
 args = parser.parse_args()
 
@@ -42,16 +53,19 @@ def framecap(vid, dir) :
     for count in range(len) :                #All frames
     # while success :
     # for i in range(5000):     #Limited frames
-        if args.save :
-            cv.imwrite(os.path.join(dir, "frame%d.jpg" % count), image)     # save frame as JPEG filee
-        if args.bar :
-            if count == 0 :
-                bar = resize(image, dir)
-            elif count < (len - 1) :
-                bar = concat(bar ,resize(image, dir))
-            else :
-                bar = concat(bar ,resize(image, dir))
-                cv.imwrite("%sbar.jpg" % dir, bar)
+        try :
+            if args.save :
+                cv.imwrite(os.path.join(dir, "frame%d.jpg" % count), image)     # save frame as JPEG filee
+            if args.bar :
+                if count == 0 :
+                    bar = resize(image, dir)
+                elif count < (len - 1) :
+                    bar = concat(bar ,resize(image, dir))
+                else :
+                    bar = concat(bar ,resize(image, dir))
+                    cv.imwrite("%sbar.jpg" % dir, bar)
+        except (cv.error, OpenCV Error):
+            print("\nSkipping Frame %d" % count)
         success,image = vidCap.read()
         count += 1
         if 'pbar' in locals():      # Progress bar update
