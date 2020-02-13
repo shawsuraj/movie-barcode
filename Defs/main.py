@@ -64,7 +64,7 @@ def framecap(vid, dir) :
                 else :
                     bar = concat(bar ,resize(image, dir))
                     cv.imwrite("%sbar.jpg" % dir, bar)
-        except (cv.error, OpenCV Error):
+        except cv.error:
             print("\nSkipping Frame %d" % count)
         success,image = vidCap.read()
         count += 1
