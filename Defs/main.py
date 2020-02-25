@@ -3,15 +3,16 @@ import argparse
 import os
 import cv2 as cv
 import time
-# import pafy
-
 from tqdm import tqdm
-
+import pafy
 
 parser = argparse.ArgumentParser(description = 'Video Clip to barcode form...')
-parser.add_argument('file',
+parser.add_argument('-f','--file',
                     metavar = 'abc.mp4',
                     help = "Location of the video file")
+parser.add_argument('-u', '--url',
+                    metavar = "https://youtu.be/xyz",
+                    help = "Url of the video")
 parser.add_argument('-b', '--bar',
                     action="store_true",
                     help="Create barcode of the video")
@@ -24,9 +25,12 @@ parser.add_argument('-v', '--verbose',
 
 args = parser.parse_args()
 
-def baseSetup(vid) :
-    dir = os.path.basename(vid)     #Setting up folder
-    dir = os.path.splitext(dir)[0]
+def dirSetup(vid) :
+    if args.file :
+        dir = os.path.basename(vid)     #Setting up folder
+        dir = os.path.splitext(dir)[0]
+    elif args.url :
+        dir = vid.title
     if not os.path.exists(dir) :
         os.mkdir(dir)
         return os.getcwd() + '/' + dir
@@ -42,8 +46,23 @@ def baseSetup(vid) :
                 j = (i/10) + 1
                 dir = dir[0:-int(j)] + str(i)
 
+def readVideo() :
+    try :
+        if args.file :
+            vid = args.file
+        elif args.url :
+            vid = pafy.new(args.url)
+            # print (vid)
+        return vid
+    except :
+        print("No file or url provided..")
+
 def framecap(vid, dir) :
-    vidCap = cv.VideoCapture(vid)
+    if args.file :
+        vidCap = cv.VideoCapture(vid)
+    elif args.url :
+        videoplay = vid.getbest(preftype="mp4")
+        vidCap = cv.VideoCapture(videoplay.url)
     success,image = vidCap.read()
     count = 0            #Initialise frame count
     success = True
@@ -64,8 +83,8 @@ def framecap(vid, dir) :
                 else :
                     bar = concat(bar ,resize(image, dir))
                     cv.imwrite("%sbar.jpg" % dir, bar)
-        except cv.error:
-            print("\nSkipping Frame %d" % count)
+        except AttributeError:
+            print("\nSkipping Frame %d -> AttributeError" % count)
         success,image = vidCap.read()
         count += 1
         if 'pbar' in locals():      # Progress bar update
@@ -89,8 +108,8 @@ def endmessage(dir) :
 
 def start():
     if args.bar or args.save :
-        vid = args.file
-        dir = baseSetup(vid) + '/'
+        vid = readVideo()
+        dir = dirSetup(vid) + '/'
         framecap(vid, dir)
         endmessage(dir)
 
