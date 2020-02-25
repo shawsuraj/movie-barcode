@@ -2,3 +2,5 @@ argparse
 numpy
 opencv-python
 tqdm
+pafy
+youtube_dl
