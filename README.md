@@ -52,13 +52,19 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## Usage
 ```
-$ python3 m vbar [mp4_file]
+$ python3 mvbar.py -f [mp4_file]
+```
+OR
+```
+$ python3 mvbar.py -u [URL]
 ```
 ```
 Optional --
--b, --bar       Create barcode of the images
--s, --save      Save all the frames of the video clip
--v, --verbose   Enable Verbose mode
+-f abc.mp4, --file abc.mp4 Location of the video file
+-u https://youtu.be/xyz, --url https://youtu.be/xyz  Url of the video
+-b, --bar             Create barcode of the video
+-s, --save            Save all the frames of a video
+-v, --verbose         Show progress
 ```
 
 ## Author
@@ -75,7 +81,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 - [ ] Add multiprocessing
 - [ ] Add option to condense the bar
-- [ ] Add Youtube videos support (pafy)
+- [x] Add Youtube videos support (pafy)
 - [ ] Add option to define time
 
 ---  
