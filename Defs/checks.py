@@ -16,7 +16,7 @@ def check() :
     req = req_f.readline()[:-1]
     while req :
         if req == "opencv-python" :
-            reqs["cv2"] = module_check("cv2")
+            reqs["opencv-python"] = module_check("cv2")
         else :
             reqs[req] = module_check(req)
         req = req_f.readline()[:-1]
