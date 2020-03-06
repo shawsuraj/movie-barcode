@@ -6,7 +6,7 @@ Convert any video clip into bar form or save all its frames.
 
   [![Build Status](https://travis-ci.com/shawsuraj/movie-barcode.svg?branch=master)](https://travis-ci.com/shawsuraj/movie-barcode)
   <a href="https://github.com/shawsuraj/movie-barcode/releases">
-    <img title="GitHub version" src="https://img.shields.io/badge/Version-v1.5.1-brightgreen" >
+    <img title="GitHub version" src="https://img.shields.io/badge/Version-v1.4.1-brightgreen" >
   </a>
   [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
   <br>
