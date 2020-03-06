@@ -61,11 +61,10 @@ def framecap(vid, dir) :
     if args.file :
         vidCap = cv.VideoCapture(vid)
     elif args.url :
-        videoplay = vid.getbest(preftype="mp4")
+        videoplay = vid.getbestvideo(preftype="any",ftypestrict=True)
         vidCap = cv.VideoCapture(videoplay.url)
-    success,image = vidCap.read()
+    image = vidCap.read()[1]
     count = 0            #Initialise frame count
-    success = True
     len = int(vidCap.get(cv.CAP_PROP_FRAME_COUNT))
     if args.verbose :
         pbar = tqdm(total=len, desc = "Processing", unit = "frames")
@@ -85,7 +84,7 @@ def framecap(vid, dir) :
                     cv.imwrite("%sbar.jpg" % dir, bar)
         except AttributeError:
             print("\nSkipping Frame %d -> AttributeError" % count)
-        success,image = vidCap.read()
+        image = vidCap.read()[1]
         count += 1
         if 'pbar' in locals():      # Progress bar update
             pbar.update(1)
@@ -105,14 +104,3 @@ def concat(bar, resized):
 
 def endmessage(dir) :
     print("[*] All the files are saved in >> " + dir)
-
-def start():
-    if args.bar or args.save :
-        vid = readVideo()
-        dir = dirSetup(vid) + '/'
-        framecap(vid, dir)
-        endmessage(dir)
-
-    else :
-        print("No option provided..!!")
-        sys.exit()
