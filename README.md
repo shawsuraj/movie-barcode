@@ -6,7 +6,7 @@ Convert any video clip into bar form or save all its frames.
 
   [![Build Status](https://travis-ci.com/shawsuraj/movie-barcode.svg?branch=master)](https://travis-ci.com/shawsuraj/movie-barcode)
   <a href="https://github.com/shawsuraj/movie-barcode/releases">
-    <img title="GitHub version" src="https://img.shields.io/badge/Version-v1.4.1-brightgreen" >
+    <img title="GitHub version" src="https://img.shields.io/badge/Version-v1.5-brightgreen" >
   </a>
   [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
   <br>
@@ -63,8 +63,31 @@ Optional --
 -f abc.mp4, --file abc.mp4 Location of the video file
 -u https://youtu.be/xyz, --url https://youtu.be/xyz  Url of the video
 -b, --bar             Create barcode of the video
--s, --save            Save all the frames of a video
+-s, --save            Save the frames of a video
 -v, --verbose         Show progress
+-t, --time            Capture from a specific time. format => hh:mm:ss-hh:mm:ss
+```
+
+## Example
+
+### Capture frames Only of a video file
+```
+python3 mvbar.py -s -f abc.mp4
+```
+
+### Capture frames and also create barcode from youtube
+```
+python3 mvbar.py -bs -u http://youtube.com/abc123
+```
+
+### Show progress and capture frames and create barcode from a local video file
+```
+python3 mvbar.py -bsv -t 00:05:00-00:07:30 -f abc.mp4
+```
+
+### Capture frames only of a file from a start time to end
+```
+python3 mvbar.oy -bv -t 00:06:30-00:00:00 -f abc.mp3
 ```
 
 ## Author
@@ -80,8 +103,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Tasks
 
 - [ ] Add multiprocessing
-- [ ] Add option to condense the bar
+- [ ] Add option to condense the bar ,
 - [x] Add Youtube videos support (pafy)
-- [ ] Add option to define time
+- [x] Add option to define time
+- [ ] GUI version
 
 ---  

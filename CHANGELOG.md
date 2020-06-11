@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [1.5]
+
+### Added
+* Custom time option.
+* Delete files or folder created if error occurs.
+
 ## [1.4.1]
 
 ### Fixed
